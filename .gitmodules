@@ -1,9 +1,9 @@
 [submodule "userver"]
-	path = ./third_party/userver
-	url = https://github.com/userver-framework/userver.git
-[submodule "cpp-jwt"]
-	path = ./third_party/cpp-jwt
-	url = https://github.com/Thalhammer/jwt-cpp.git
+    path = third_party/userver
+    url = https://github.com/userver-framework/userver.git
+[submodule "jwt-cpp"]
+    path = third_party/jwt-cpp
+    url = https://github.com/Thalhammer/jwt-cpp.git
 [submodule "libbcrypt"]
-	path = ./third_party/libbcrypt
-	url = https://github.com/trusch/libbcrypt.git
+    path = third_party/libbcrypt
+    url = https://github.com/trusch/libbcrypt.git
