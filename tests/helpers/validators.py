@@ -32,3 +32,9 @@ def validate_profile_response(user: User, response) -> None:
         'username': user.username,
         'email': user.email,
     }
+
+
+def validate_update_response(response) -> None:
+    assert response.json() == {
+        'user_id': matching.RegexString(UUID_REGEX),
+    }

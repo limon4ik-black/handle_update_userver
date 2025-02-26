@@ -14,6 +14,21 @@ class User(BaseModel):
     token: Optional[str] = None
 
 
+    def create_user_for_update(self, field: str = None) -> dict:
+            payload = {
+                "new_username": self.username,
+                "email": self.email,
+                "password": self.password
+            }
+            if field in payload:
+                del payload[field]
+            return {
+                "user_id": self.id,
+                "payload": payload
+            }
+        
+
+
 def create_user_without_field(field: str) -> User:
     data = User().model_dump(exclude={field})
     return User.model_construct(**data)

@@ -57,3 +57,93 @@ BEGIN
         username = _username;
 END;
 $$ LANGUAGE plpgsql;
+
+
+-- CREATE OR REPLACE FUNCTION robinid.update_user(
+--     _username CITEXT,
+--     _new_username CITEXT DEFAULT NULL,
+--     _new_email VARCHAR(255) DEFAULT NULL,
+--     _new_password_hash VARCHAR(255) DEFAULT NULL
+-- )
+-- RETURNS TEXT
+-- AS $$
+-- DECLARE
+--     _user_id TEXT;
+-- BEGIN
+
+--     SELECT id::TEXT
+--     INTO _user_id
+--     FROM robinid.users
+--     WHERE username = _username;
+
+--     IF _user_id IS NULL THEN
+--         RAISE EXCEPTION 'User with username "%" not found', _username;
+--     END IF;
+
+--     IF _new_username IS NOT NULL THEN
+--         UPDATE robinid.users
+--         SET username = _new_username
+--         WHERE id = _user_id::UUID;
+--     END IF;
+
+--     IF _new_email IS NOT NULL THEN
+--         UPDATE robinid.users
+--         SET email = _new_email
+--         WHERE id = _user_id::UUID;
+--     END IF;
+
+--     IF _new_password_hash IS NOT NULL THEN
+--         UPDATE robinid.users
+--         SET password_hash = _new_password_hash
+--         WHERE id = _user_id::UUID;
+--     END IF;
+
+--     RETURN _user_id;
+-- END;
+-- $$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION robinid.update_user(
+	_user_id text,
+	_new_username citext DEFAULT NULL::citext,
+	_new_email character varying DEFAULT NULL::character varying,
+	_new_password_hash character varying DEFAULT NULL::character varying)
+    RETURNS text
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE PARALLEL UNSAFE
+AS $BODY$
+BEGIN
+    -- Проверка существования пользователя с переданным _user_id
+    IF NOT EXISTS (
+        SELECT 1
+        FROM robinid.users
+        WHERE id = _user_id::uuid
+    ) THEN
+        RAISE EXCEPTION 'User with id "%" not found', _user_id;
+    END IF;
+
+    -- Обновление username, если передано новое значение
+    IF _new_username IS NOT NULL THEN
+        UPDATE robinid.users
+        SET username = _new_username
+        WHERE id = _user_id::uuid;
+    END IF;
+
+    -- Обновление email, если передано новое значение
+    IF _new_email IS NOT NULL THEN
+        UPDATE robinid.users
+        SET email = _new_email
+        WHERE id = _user_id::uuid;
+    END IF;
+
+    -- Обновление password_hash, если передано новое значение
+    IF _new_password_hash IS NOT NULL THEN
+        UPDATE robinid.users
+        SET password_hash = _new_password_hash
+        WHERE id = _user_id::uuid;
+    END IF;
+
+    -- Возврат _user_id
+    RETURN _user_id;
+END;
+$BODY$;

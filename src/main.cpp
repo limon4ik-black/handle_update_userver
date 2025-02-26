@@ -14,6 +14,7 @@
 #include "handlers/users/login.hpp"
 #include "handlers/users/profile.hpp"
 #include "handlers/users/signup.hpp"
+#include "handlers/users/update.hpp"
 
 int main(int argc, char* argv[]) {
     userver::server::handlers::auth::RegisterAuthCheckerFactory(
@@ -30,7 +31,8 @@ int main(int argc, char* argv[]) {
                               .Append<userver::components::DefaultSecdistProvider>()
                               .Append<RobinID::users::v1::signup::post::Handler>()
                               .Append<RobinID::users::v1::login::post::Handler>()
-                              .Append<RobinID::users::v1::profile::get::Handler>();
+                              .Append<RobinID::users::v1::profile::get::Handler>()
+                              .Append<RobinID::users::v1::update::patch::Handler>();
 
     return userver::utils::DaemonMain(argc, argv, component_list);
 }

@@ -38,3 +38,15 @@ async def user_profile(service_client: Client, user: User):
         bearer=user.token,
         params={'username': user.username},
     )
+
+
+async def user_update(
+    service_client: Client,
+    user: User,
+    field: str = None
+):
+    return await service_client.patch(
+        Routes.UPDATE,
+        json=user.create_user_for_update(field)
+    )
+

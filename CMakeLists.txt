@@ -37,6 +37,8 @@ add_library(${PROJECT_NAME}_objs OBJECT
     src/handlers/users/login.cpp
     src/handlers/users/profile.hpp
     src/handlers/users/profile.cpp
+    src/handlers/users/update.cpp
+    src/handlers/users/update.hpp
     src/utils/consts.hpp
     src/utils/errors.cpp
     src/utils/errors.hpp

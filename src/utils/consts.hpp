@@ -14,10 +14,17 @@ inline constexpr std::string_view kEmpty{"cannot be empty"};
 inline constexpr std::string_view kRequired{"required"};
 inline constexpr std::string_view kInvalidType{"invalid type"};
 inline constexpr std::string_view kLengthErrorMessage{"{} length must be between {} and {} characters"};
+inline constexpr std::string_view kExist{ "cannot not exist"};
+
+// payload
+inline constexpr std::string_view kPayloadField{"payload"};
 
 // email
 inline constexpr std::string_view kEmailField{"email"};
 inline const std::regex kEmailPattern{"(\\w+)(\\.|_)?(\\w*)@(\\w+)(\\.(\\w+))+"};
+
+//user_id
+inline constexpr std::string_view kUserIdField{"user_id"};
 
 // username
 inline constexpr std::string_view kUsernameField{"username"};

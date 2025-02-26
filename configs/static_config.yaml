@@ -69,6 +69,11 @@ components_manager:
                   - bearer
                 required: true
 
+        users-v1-update:
+            path: /robin-id/users/v1/update
+            method: PATCH
+            task_processor: main-task-processor
+
         postgres-db-1:
             dbconnection: $dbconnection
             dbconnection#env: DB_CONNECTION

@@ -3,6 +3,7 @@
 #include "../utils/consts.hpp"
 #include "../utils/extractors.hpp"
 #include "../utils/validators.hpp"
+#include <userver/logging/log.hpp>
 
 namespace RobinID::dto {
 
@@ -48,5 +49,38 @@ userver::formats::json::Value Serialize(const UsersProfileResponse& data,
 
     return builder.ExtractValue();
 }
+
+UsersV1UpdateRequest Parse(const userver::formats::json::Value& json,
+                          userver::formats::parse::To<UsersV1UpdateRequest>) {
+    UsersV1UpdateRequest request;
+    LOG_INFO() << "Parsing UsersV1UpdateRequest...";
+    
+    request.username_ =
+        utils::extractors::ExtractValueFromJson(json, utils::consts::kUserIdField, true);
+    utils::validators::ValidateUsernameForUpdate(request.username_.value());// сделать проверку на user_id
+    
+    if(json.HasMember("payload") && json["payload"].IsObject()){
+        request.payload_.emplace();
+        const auto& payload_json = json["payload"]; 
+
+        request.payload_->email_ = utils::extractors::ExtractValueFromJson(payload_json, utils::consts::kEmailField, false);
+        if(request.payload_->email_.has_value())
+            utils::validators::ValidateEmail(request.payload_->email_.value());
+
+        request.payload_->new_username_ =
+            utils::extractors::ExtractValueFromJson(payload_json, "new_username", false);
+        if(request.payload_->new_username_.has_value())
+            utils::validators::ValidateUsername(request.payload_->new_username_.value());
+
+        request.payload_->password_ =
+            utils::extractors::ExtractValueFromJson(payload_json, utils::consts::kPasswordField, false);
+        if(request.payload_->password_.has_value())
+            utils::validators::ValidatePassword(request.payload_->password_.value());
+    }else{
+        utils::validators::ValidatePayload();
+    }
+    return request;
+}
+
 
 }  // namespace RobinID::dto
