@@ -1,5 +1,5 @@
 # example-robin-id
-
+Из всего этого проекта, я писал только то, что связано с update
 Это тестовый пример сервиса, написанного с использованием [userver](https://github.com/userver-framework/userver), [jwt-cpp](https://github.com/Thalhammer/jwt-cpp) и [libbcrypt](https://github.com/trusch/libbcrypt).
 
 ## Установка
